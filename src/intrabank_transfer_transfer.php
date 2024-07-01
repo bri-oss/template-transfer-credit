@@ -1,5 +1,4 @@
 <?php
-include 'util.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
@@ -21,9 +20,8 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$account = '111231271284142'; // account number
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+$partnerId = ''; //partner id
+$channelId = ''; // channel id
 
 $beneficiaryAccountNo = '888801000157508';
 $deviceId = '12345679237';
@@ -36,20 +34,6 @@ $getAccessToken = new GetAccessToken();
   $pKeyId,
   $baseUrl
 );
-
-// $response = $intrabankTransfer->inquiry(
-//   $clientSecret,
-//   $partnerId,
-//   $baseUrl,
-//   $accessToken,
-//   $channelId,
-//   $timestamp,
-//   $beneficiaryAccountNo,
-//   $deviceId,
-//   $channel
-// );
-
-// echo "inquiry $response \n";
 
 $partnerReferenceNo = '2021112500000000000001';
 $beneficiaryAccountNo = '888801000157508';

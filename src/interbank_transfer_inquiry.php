@@ -1,16 +1,14 @@
 <?php
-
-use BRI\TransferCredit\TransactionStatusInquiry;
-use BRI\Util\GenerateDate;
-use BRI\Util\GetAccessToken;
-
-include 'util.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
 
 require __DIR__ . '/../briapi-sdk/autoload.php';
 
+use BRI\TransferCredit\InterbankTransfer;
+use BRI\Util\GetAccessToken;
+
+$interbankTransfer = new InterbankTransfer();
 
 // env values
 $clientId = $_ENV['CONSUMER_KEY']; // customer key
@@ -21,13 +19,13 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$account = '111231271284142'; // account number
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+$partnerId = ''; //partner id
+$channelId = ''; // channel id
 
+$beneficiaryBankCode = '002';
 $beneficiaryAccountNo = '888801000157508';
-$deviceId = '12345679237';
-$channel = 'mobilephone';
+$deviceId = '';
+$channel = '';
 
 $getAccessToken = new GetAccessToken();
 
@@ -37,20 +35,17 @@ $getAccessToken = new GetAccessToken();
   $baseUrl
 );
 
-$transactionStatusInquiry = new TransactionStatusInquiry();
-
-$response = $transactionStatusInquiry->inquiry(
+$response = $interbankTransfer->inquiry(
   $clientSecret,
   $partnerId,
   $baseUrl,
   $accessToken,
   $channelId,
   $timestamp,
-  $originalPartnerReferenceNo = '20201029000000000000',
-  $serviceCode = '18',
-  $transactionDate = (new GenerateDate())->generate(),
+  $beneficiaryBankCode,
+  $beneficiaryAccountNo,
   $deviceId,
   $channel
 );
 
-echo "transfer status inquiry $response \n";
+echo "inquiry $response \n";
