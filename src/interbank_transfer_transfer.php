@@ -60,7 +60,7 @@ $response = $interbankTransfer->transfer(
   $beneficiaryBankCode,
   $sourceAccountNo,
   $transactionDate,
-  $currency = 'IDR',
+  $currency,
   $beneficiaryAddress,
   $beneficiaryBankName,
   $beneficiaryEmail,

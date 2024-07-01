@@ -26,6 +26,14 @@ $channelId = ''; // channel id
 $beneficiaryAccountNo = '888801000157508';
 $deviceId = '12345679237';
 $channel = 'mobilephone';
+$partnerReferenceNo = '2021112500000000000001';
+$sourceAccountNo = '888801000157610';
+$feeType = 'BEN';
+$remark = 'remark test';
+$customerReference = '10052031';
+$transactionDate = (new GenerateDate())->generate();
+$value = '10000.00';
+$currency = 'IDR';
 
 $getAccessToken = new GetAccessToken();
 
@@ -35,14 +43,6 @@ $getAccessToken = new GetAccessToken();
   $baseUrl
 );
 
-$partnerReferenceNo = '2021112500000000000001';
-$beneficiaryAccountNo = '888801000157508';
-$sourceAccountNo = '888801000157610';
-$feeType = 'BEN';
-$remark = 'remark test';
-$customerReference = '10052031';
-$transactionDate = (new GenerateDate())->generate();
-
 $response = $intrabankTransfer->transfer(
   $clientSecret,
   $partnerId,
@@ -51,13 +51,13 @@ $response = $intrabankTransfer->transfer(
   $channelId,
   $timestamp,
   $partnerReferenceNo,
-  $value = "10000.00",
+  $value,
   $beneficiaryAccountNo,
   $sourceAccountNo,
   $feeType,
   $remark,
   $transactionDate,
-  $currency = 'IDR',
+  $currency,
   $customerReference,
   $deviceId,
   $channel
