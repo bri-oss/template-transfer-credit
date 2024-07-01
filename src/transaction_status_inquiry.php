@@ -24,16 +24,18 @@ $channelId = ''; // channel id
 $beneficiaryAccountNo = '888801000157508';
 $deviceId = '';
 $channel = 'mobilephone';
-
+$originalPartnerReferenceNo = '10052031';
+$serviceCode = '17';
+$transactionDate = '2021-11-30T10:30:24+07:00';
 $getAccessToken = new GetAccessToken();
+
+$transactionStatusInquiry = new TransactionStatusInquiry();
 
 [$accessToken, $timestamp] = $getAccessToken->get(
   $clientId,
   $pKeyId,
   $baseUrl
 );
-
-$transactionStatusInquiry = new TransactionStatusInquiry();
 
 $response = $transactionStatusInquiry->inquiry(
   $clientSecret,
@@ -42,9 +44,9 @@ $response = $transactionStatusInquiry->inquiry(
   $accessToken,
   $channelId,
   $timestamp,
-  $originalPartnerReferenceNo = '10052031',
-  $serviceCode = '17',
-  $transactionDate = '2021-11-30T10:30:24+07:00',//(new GenerateDate())->generate(),
+  $originalPartnerReferenceNo,
+  $serviceCode,
+  $transactionDate,//(new GenerateDate())->generate(),
   $deviceId,
   $channel
 );
