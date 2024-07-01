@@ -7,7 +7,6 @@ module:
 - [Intrabank Transfer](https://developers.bri.co.id/en/snap-bi/api-account-inquiry-internal-intrabank-transfer-v11)
 - [Transaction Status Inquiry](https://developers.bri.co.id/en/snap-bi/api-transaction-status-inquiry)
 
-
 ## List of Content
 - [Instalasi](#instalasi)
   - [Prerequisites](#prerequisites)
