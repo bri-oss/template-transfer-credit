@@ -19,11 +19,11 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$partnerId = ''; //partner id
-$channelId = ''; // channel id
+$partnerId = 'feedloop'; //partner id
+$channelId = '12345'; // channel id
 
 $beneficiaryBankCode = '002';
-$beneficiaryAccountNo = '888801000157508';
+$beneficiaryAccountNo = '888801000157509';
 $deviceId = '';
 $channel = '';
 
