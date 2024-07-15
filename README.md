@@ -30,6 +30,7 @@ module:
 1. copy .env file by typing 'cp .env.example .env' in the terminal
 2. fill the .env file with the required values
 3. run composer install to install all dependencies
+4. run command `cd template-transfer-credit` to change directory
 ```
 
 ### Interbank Transfer Inquiry
