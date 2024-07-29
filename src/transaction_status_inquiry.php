@@ -18,15 +18,15 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+$partnerId = ''; //partner id
+$channelId = ''; // channel id
 
-$beneficiaryAccountNo = '888801000157508';
+$beneficiaryAccountNo = '';
 $deviceId = '';
-$channel = 'mobilephone';
-$originalPartnerReferenceNo = '10052031';
-$serviceCode = '17';
-$transactionDate = '2021-11-30T10:30:24+07:00';
+$channel = '';
+$originalPartnerReferenceNo = '';
+$serviceCode = '';
+$transactionDate = ''; // 2021-11-30T10:30:24+07:00
 $getAccessToken = new GetAccessToken();
 
 $transactionStatusInquiry = new TransactionStatusInquiry();

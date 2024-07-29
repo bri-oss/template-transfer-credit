@@ -20,23 +20,23 @@ $pKeyId = $_ENV['PRIVATE_KEY']; // private key
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
 // change variables accordingly
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+$partnerId = ''; //partner id
+$channelId = ''; // channel id
 
-$partnerReferenceNo = '20211130000000001';
-$beneficiaryAccountName = 'Dummy';
-$beneficiaryAccountNo = '888801000187508';
-$beneficiaryBankCode = '002';
-$sourceAccountNo = '988901000187608';
+$partnerReferenceNo = '';
+$beneficiaryAccountName = '';
+$beneficiaryAccountNo = '';
+$beneficiaryBankCode = '';
+$sourceAccountNo = '';
 $transactionDate = (new GenerateDate())->generate();
-$beneficiaryAddress = 'Palembang';
-$beneficiaryBankName = 'Bank BRI';
-$beneficiaryEmail = 'yories.yolanda@work.bri.co.id';
-$customerReference = '10052023';
-$value = "1000000.00";
+$beneficiaryAddress = '';
+$beneficiaryBankName = '';
+$beneficiaryEmail = '';
+$customerReference = '';
+$value = "";
 $currency = 'IDR';
-$deviceId = '12345679237';
-$channel = 'mobilephone';
+$deviceId = '';
+$channel = '';
 
 $getAccessToken = new GetAccessToken();
 
