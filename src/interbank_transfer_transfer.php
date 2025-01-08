@@ -1,72 +1,84 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
 
-Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
-
-require __DIR__ . '/../../briapi-sdk/autoload.php';
-
-use BRI\TransferCredit\InterbankTransfer;
 use BRI\Util\GenerateDate;
-use BRI\Util\GetAccessToken;
 
-$interbankTransfer = new InterbankTransfer();
-
-// env values
-$clientId = $_ENV['CONSUMER_KEY']; // customer key
-$clientSecret = $_ENV['CONSUMER_SECRET']; // customer secret
-$pKeyId = $_ENV['PRIVATE_KEY']; // private key
+require 'utils.php';
 
 // url path values
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
-// change variables accordingly
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+try {
+  list($clientId, $clientSecret, $privateKey) = getCredentials();
 
-$partnerReferenceNo = '20211130000000001';
-$beneficiaryAccountName = 'Dummy';
-$beneficiaryAccountNo = '888801000187508';
-$beneficiaryBankCode = '002';
-$sourceAccountNo = '988901000187608';
-$transactionDate = (new GenerateDate())->generate();
-$beneficiaryAddress = 'Palembang';
-$beneficiaryBankName = 'Bank BRI';
-$beneficiaryEmail = 'yories.yolanda@work.bri.co.id';
-$customerReference = '10052023';
-$value = "1000000.00";
-$currency = 'IDR';
-$deviceId = '12345679237';
-$channel = 'mobilephone';
+  list($accessToken, $timestamp) = getAccessToken(
+    $clientId,
+    $privateKey,
+    $baseUrl
+  );
 
-$getAccessToken = new GetAccessToken();
+  // change variables accordingly
+  $partnerId = ''; //partner id
+  $channelId = ''; // channel id
 
-[$accessToken, $timestamp] = $getAccessToken->get(
-  $clientId,
-  $pKeyId,
-  $baseUrl
-);
+  $partnerReferenceNo = '';
+  $beneficiaryAccountName = '';
+  $beneficiaryAccountNo = '';
+  $beneficiaryBankCode = '';
+  $sourceAccountNo = '';
+  $transactionDate = (new GenerateDate())->generate();
+  $beneficiaryAddress = '';
+  $beneficiaryBankName = '';
+  $beneficiaryEmail = '';
+  $customerReference = '';
+  $value = "";
+  $currency = '';
+  $deviceId = '';
+  $channel = '';
 
-$response = $interbankTransfer->transfer(
-  $clientSecret,
-  $partnerId,
-  $baseUrl,
-  $accessToken,
-  $channelId,
-  $timestamp,
-  $partnerReferenceNo,
-  $value,
-  $beneficiaryAccountName,
-  $beneficiaryAccountNo,
-  $beneficiaryBankCode,
-  $sourceAccountNo,
-  $transactionDate,
-  $currency,
-  $beneficiaryAddress,
-  $beneficiaryBankName,
-  $beneficiaryEmail,
-  $customerReference,
-  $deviceId,
-  $channel
-);
+  $validateInput = sanitizeInput([
+    'partnerId' => $partnerId,
+    'channelId' => $channelId,
+    'partnerReferenceNo' => $partnerReferenceNo,
+    'beneficiaryAccountName' => $beneficiaryAccountName,
+    'beneficiaryAccountNo' => $beneficiaryAccountNo,
+    'beneficiaryBankCode' => $beneficiaryBankCode,
+    'sourceAccountNo' => $sourceAccountNo,
+    'transactionDate' => $transactionDate,
+    'beneficiaryAddress' => $beneficiaryAddress,
+    'beneficiaryBankName' => $beneficiaryBankName,
+    'beneficiaryEmail' => $beneficiaryEmail,
+    'customerReference' => $customerReference,
+    'value' => $value,
+    'currency' => $currency,
+    'deviceId' => $deviceId,
+    'channel' => $channel
+  ]);
 
-echo "transfer $response \n";
+  $response = fetchInterbankTransferTransfer(
+    $clientSecret,
+    $validateInput['partnerId'],
+    $baseUrl,
+    $accessToken,
+    $validateInput['channelId'],
+    $timestamp,
+    $validateInput['partnerReferenceNo'],
+    $validateInput['value'],
+    $validateInput['beneficiaryAccountName'],
+    $validateInput['beneficiaryAccountNo'],
+    $validateInput['beneficiaryBankCode'],
+    $validateInput['sourceAccountNo'],
+    $validateInput['transactionDate'],
+    $validateInput['currency'],
+    $validateInput['beneficiaryAddress'],
+    $validateInput['beneficiaryBankName'],
+    $validateInput['beneficiaryEmail'],
+    $validateInput['customerReference'],
+    $validateInput['deviceId'],
+    $validateInput['channel']
+  );
+
+  echo $response;
+} catch (Exception $e) {
+  error_log('Error: ' . $e->getMessage());
+  exit(1);
+}

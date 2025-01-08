@@ -1,49 +1,49 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
 
-Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
-
-require __DIR__ . '/../../briapi-sdk/autoload.php';
-
-use BRI\TransferCredit\IntrabankTransfer;
-use BRI\Util\GetAccessToken;
-
-$intrabankTransfer = new IntrabankTransfer();
-
-// env values
-$clientId = $_ENV['CONSUMER_KEY']; // customer key
-$clientSecret = $_ENV['CONSUMER_SECRET']; // customer secret
-$pKeyId = $_ENV['PRIVATE_KEY']; // private key
+require 'utils.php';
 
 // url path values
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
-// change variables accordingly
-$partnerId = 'feedloop'; //partner id
-$channelId = '12345'; // channel id
+try {
+  list($clientId, $clientSecret, $privateKey) = getCredentials();
 
-$beneficiaryAccountNo = '888801000157508';
-$deviceId = '12345679237';
-$channel = 'mobilephone';
+  list($accessToken, $timestamp) = getAccessToken(
+    $clientId,
+    $pKeyId,
+    $baseUrl
+  );
 
-$getAccessToken = new GetAccessToken();
+  // change variables accordingly
+  $partnerId = ''; //partner id
+  $channelId = ''; // channel id
 
-[$accessToken, $timestamp] = $getAccessToken->get(
-  $clientId,
-  $pKeyId,
-  $baseUrl
-);
+  $beneficiaryAccountNo = '';
+  $deviceId = '';
+  $channel = '';
 
-$response = $intrabankTransfer->inquiry(
-  $clientSecret,
-  $partnerId,
-  $baseUrl,
-  $accessToken,
-  $channelId,
-  $timestamp,
-  $beneficiaryAccountNo,
-  $deviceId,
-  $channel
-);
+  $validateInputs = sanitizeInput([
+    'partnerId' => $partnerId,
+    'channelId' => $channelId,
+    'beneficiaryAccountNo' => $beneficiaryAccountNo,
+    'deviceId' => $deviceId,
+    'channel' => $channel
+  ]);
 
-echo "inquiry $response \n";
+  $response = fetchIntrabankTransferInquiry(
+    $clientSecret,
+    $validateInputs['partnerId'],
+    $baseUrl,
+    $accessToken,
+    $validateInputs['channelId'],
+    $timestamp,
+    $validateInputs['beneficiaryAccountNo'],
+    $validateInputs['deviceId'],
+    $validateInputs['channel']
+  );
+
+  echo $response;
+} catch (Exception $e) {
+  error_log('Error: ' . $e->getMessage());
+  exit(1);
+}
