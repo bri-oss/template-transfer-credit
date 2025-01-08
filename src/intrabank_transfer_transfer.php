@@ -1,66 +1,75 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
 
-Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/..' . '')->load();
-
-require __DIR__ . '/../../briapi-sdk/autoload.php';
-
-use BRI\TransferCredit\IntrabankTransfer;
 use BRI\Util\GenerateDate;
-use BRI\Util\GetAccessToken;
 
-$intrabankTransfer = new IntrabankTransfer();
-
-// env values
-$clientId = $_ENV['CONSUMER_KEY']; // customer key
-$clientSecret = $_ENV['CONSUMER_SECRET']; // customer secret
-$pKeyId = $_ENV['PRIVATE_KEY']; // private key
+require 'utils.php';
 
 // url path values
 $baseUrl = 'https://sandbox.partner.api.bri.co.id'; //base url
 
-// change variables accordingly
-$partnerId = ''; //partner id
-$channelId = ''; // channel id
+try {
+  list($clientId, $clientSecret, $privateKey) = getCredentials();
 
-$beneficiaryAccountNo = '';
-$deviceId = '';
-$channel = '';
-$partnerReferenceNo = '';
-$sourceAccountNo = '';
-$feeType = '';
-$remark = '';
-$customerReference = '';
-$transactionDate = (new GenerateDate())->generate();
-$value = ''; // 10000.00
-$currency = '';
+  list($accessToken, $timestamp) = getAccessToken(
+    $clientId,
+    $pKeyId,
+    $baseUrl
+  );
 
-$getAccessToken = new GetAccessToken();
+  // change variables accordingly
+  $partnerId = ''; //partner id
+  $channelId = ''; // channel id
 
-[$accessToken, $timestamp] = $getAccessToken->get(
-  $clientId,
-  $pKeyId,
-  $baseUrl
-);
+  $beneficiaryAccountNo = '';
+  $deviceId = '';
+  $channel = '';
+  $partnerReferenceNo = '';
+  $sourceAccountNo = '';
+  $feeType = '';
+  $remark = '';
+  $customerReference = '';
+  $transactionDate = (new GenerateDate())->generate();
+  $value = ''; // 10000.00
+  $currency = '';
 
-$response = $intrabankTransfer->transfer(
-  $clientSecret,
-  $partnerId,
-  $baseUrl,
-  $accessToken,
-  $channelId,
-  $timestamp,
-  $partnerReferenceNo,
-  $value,
-  $beneficiaryAccountNo,
-  $sourceAccountNo,
-  $feeType,
-  $remark,
-  $transactionDate,
-  $currency,
-  $customerReference,
-  $deviceId,
-  $channel
-);
+  $validateInputs = sanitizeInput([
+    'partnerId' => $partnerId,
+    'channelId' => $channelId,
+    'beneficiaryAccountNo' => $beneficiaryAccountNo,
+    'deviceId' => $deviceId,
+    'channel' => $channel,
+    'partnerReferenceNo' => $partnerReferenceNo,
+    'sourceAccountNo' => $sourceAccountNo,
+    'feeType' => $feeType,
+    'remark' => $remark,
+    'customerReference' => $customerReference,
+    'transactionDate' => $transactionDate,
+    'value' => $value,
+    'currency' => $currency
+  ]);
 
-echo "transfer $response \n";
+  $response = fetchIntrabankTransferTransfer(
+    $clientSecret,
+    $validateInputs['partnerId'],
+    $baseUrl,
+    $accessToken,
+    $validateInputs['channelId'],
+    $timestamp,
+    $validateInputs['partnerReferenceNo'],
+    $validateInputs['value'],
+    $validateInputs['beneficiaryAccountNo'],
+    $validateInputs['sourceAccountNo'],
+    $validateInputs['feeType'],
+    $validateInputs['remark'],
+    $validateInputs['transactionDate'],
+    $validateInputs['currency'],
+    $validateInputs['customerReference'],
+    $validateInputs['deviceId'],
+    $validateInputs['channel']
+  );
+
+  echo $response;
+} catch (Exception $e) {
+  error_log('Error: ' . $e->getMessage());
+  exit(1);
+}
