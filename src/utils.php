@@ -9,7 +9,9 @@ require __DIR__ . '/../../briapi-sdk/autoload.php';
 use BRI\TransferCredit\InterbankTransfer;
 use BRI\TransferCredit\IntrabankTransfer;
 use BRI\TransferCredit\TransactionStatusInquiry;
+use BRI\Util\ExecuteCurlRequest;
 use BRI\Util\GetAccessToken;
+use BRI\Util\PrepareRequest;
 
 function getCredentials(): array {
   $clientId = $_ENV['CONSUMER_KEY'] ?? null; // customer key
@@ -63,7 +65,13 @@ function fetchInterbankTransferInquiry(
   string $deviceId,
   string $channel
 ): string {
-  $interbankTransfer = new InterbankTransfer();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $interbankTransfer = new InterbankTransfer(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $interbankTransfer->inquiry(
     $clientSecret,
@@ -103,7 +111,13 @@ function fetchInterbankTransferTransfer(
   string $deviceId,
   string $channel
 ): string {
-  $interbankTransfer = new InterbankTransfer();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $interbankTransfer = new InterbankTransfer(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $interbankTransfer->transfer(
     $clientSecret,
@@ -142,7 +156,13 @@ function fetchIntrabankTransferInquiry(
   string $deviceId,
   string $channel
 ): string {
-  $intrabankTransfer = new IntrabankTransfer();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $intrabankTransfer = new IntrabankTransfer(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $intrabankTransfer->inquiry(
     $clientSecret,
@@ -178,7 +198,13 @@ function fetchIntrabankTransferTransfer(
   string $deviceId,
   string $channel
 ): string {
-  $intrabankTransfer = new IntrabankTransfer();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $intrabankTransfer = new IntrabankTransfer(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $intrabankTransfer->transfer(
     $clientSecret,
@@ -216,7 +242,13 @@ function fetchTransactionStatusInquiry(
   string $deviceId,
   string $channel
 ): string {
-  $transactionStatusInquiry = new TransactionStatusInquiry();
+  $executeCurlRequest = new ExecuteCurlRequest();
+  $prepareRequest = new PrepareRequest();
+
+  $transactionStatusInquiry = new TransactionStatusInquiry(
+    $executeCurlRequest,
+    $prepareRequest
+  );
 
   $response = $transactionStatusInquiry->inquiry(
     $clientSecret,
